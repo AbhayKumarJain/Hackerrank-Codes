@@ -1,0 +1,40 @@
+%using filters in matlab
+clc;
+clear all;
+close all;
+%-----image read-----%
+I1=imread("fig7.PNG");
+%---converting to 2 plane----%
+%--converting to gray scale--%
+I=rgb2gray(I1);
+%---converting to r,g,b plane----%
+red = I1(:, :, 1);
+green = I1(:, :, 2);
+blue = I1(:, :, 3);
+%J = imadjust (I,[],[],0.5);
+%--Median Filter using Grayscale --%
+K = medfilt2(I);
+figure;
+imshowpair(I1,K,'montage')
+sgtitle("Median Filter");
+%--Median Filter using r,g,b plane then concat--%
+L1 = medfilt2(red);
+L2 = medfilt2(green);
+L3 = medfilt2(blue);
+Km=cat(3,L1,L2,L3);
+figure;
+imshowpair(I1,Km,'montage')
+sgtitle("Median Filter");
+
+%--Average Filter--%
+%--Average Filter using greyscale--%
+A=1.5; %% A can be change to reduce blur effect
+figure;
+for i=1:10
+subplot(4,4,i);
+h3 = fspecial ('Average', i);
+K3=A*imfilter(I,h3);
+imshowpair(I1,K3,'montage')
+xlabel(i);
+sgtitle("Average Filter");
+end
